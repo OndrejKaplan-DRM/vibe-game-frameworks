@@ -16,12 +16,20 @@
 - **Arkáda M1** deklaruje pět položek: rychlost hry, měřítko vykreslení, celou obrazovku, hlasitost a test zvuku. Obtížnost zatím ne (hra nemá co ztěžovat, viz D-014).
 - **Build:** `dist/arkada.html`, jeden soubor, 30,2 kB.
 
+## Šablona nabídek (2026-11-19)
+
+- Katalog nabídek pro arkádu: `src/shell/catalog/arcade.js`, 128 položek, 18 obrazovek, úrovně A 38 / B 39 / C 51.
+- Spojení se hrou: `src/shell/catalog/bind.js` (`bindCatalog`, `visibleItems`, `toSettingsDefs`).
+- Náhled k zaslepování: `npm run preview:catalog` → `dist/sablona-menu-arkada.html`.
+- Arkáda v0.2 má z katalogu 19 položek (13 A, 6 B), 13 vědomě nemá. Shell katalog zatím nečte přímo; to je krok S2.
+
 ## Testy
 
 | Sada | Kde běží | Výsledek |
 |---|---|---|
 | `t1_logika.mjs` | Node | 34 prošlo, 0 selhalo |
 | `t3_nastaveni.mjs` | Node | 46 prošlo, 0 selhalo |
+| `t5_katalog.mjs` | Node | 47 prošlo, 0 selhalo |
 | `t2_shell.cjs` | Chromium bez grafické karty | 48 prošlo, 0 selhalo, 0 přeskočeno |
 | `t4_nastaveni_ui.cjs` | Chromium bez grafické karty | 55 prošlo, 0 selhalo, 0 přeskočeno |
 

@@ -15,6 +15,8 @@ Stav: 19. 11. 2026. Vychází z konverzace s Gemini 4.0 Argon (Level 0), z její
 | `20_CASE_Slunecni_soustava.md` | model soustavy, přelety, povrchy |
 | `30_CASE_Bojovka.md` | 2D bojovka |
 | `40_CASE_Arkada.md` | běžec / sběrač; zároveň zkušební hra pro Shell |
+| `41_SABLONA_Menu_arkada.md` | šablona nabídek pro arkádu: katalog 128 položek ve třech úrovních, pravidla, použití |
+| `41a_KATALOG_arkada_vypis.md` | generovaný výpis katalogu po obrazovkách |
 | `50_CASE_Planetka_simulace.md` | planetka, život obyvatel, volitelně zásahy shora |
 | `60_ROZSIRENI_RTS_a_otevreny_svet.md` | kratší karty pro strategii a otevřený svět |
 

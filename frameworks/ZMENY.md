@@ -31,3 +31,12 @@ Neopraveno, jen zaznamenáno: vývojářský přehled kreslený hrou se může k
 | 16 | `02_SHELL` oddíl 5 | Pořadí úložišť „IndexedDB → localStorage → paměť“ se pro nastavení nehodí: IndexedDB je asynchronní a nastavení musí platit před prvním snímkem. | Nastavení synchronně do `localStorage`, IndexedDB až pro uložené pozice. |
 | 17 | `02_SHELL` oddíl 3 | Výzva k otočení sama nestačí: hra pod ní běžela dál; na počítači s úzkým oknem by naopak překážela. | Výzva jen na dotykovém zařízení, hra se zapauzuje a po otočení čeká. |
 | 18 | `02_SHELL` oddíl 9 | Po zavření nastavení skočil fokus na první položku menu; volby v řádku se zalamovaly. | Návrat fokusu, pohyb po řádcích, šířka popisku. |
+
+## Třetí použití: rozbor hry Dinoš 2.7 (2026-11-19)
+
+| # | Kde | Co drhlo | Oprava |
+|---|---|---|---|
+| 19 | `02_SHELL` oddíl 2 | „Co hra neumí, v menu není“ nestačí, když chce autor předimenzované menu a položky zaslepovat. Chyběl úplný seznam, ze kterého se vybírá. | Katalog nabídek (`41_SABLONA`): seznam je úplný, hráč vidí jen zapojené položky, hra se k základu vyjádří celému. |
+| 20 | `02_SHELL` oddíl 8 | Vývojářská volba v Dinošovi přepsala hráči uložené nastavení. Specifikace to nezakazovala. | Vývojářské volby se neukládají; kontrola katalogu to vynucuje. |
+| 21 | `02_SHELL` oddíl 3 | Dinoš: Enter na tlačítku pod fokusem spustil hru, protože globální zkratka měla přednost. | Pravidlo 7 šablony: Enter patří položce pod fokusem; globální zkratky jen bez fokusu na prvku. |
+| 22 | `02_SHELL` oddíl 9 | Dinoš: na telefonu na šířku ležely položky menu pod okrajem a nešly posunout. | Pravidlo 8 šablony: každá obrazovka se vejde nebo posouvá na čtyřech velikostech; patří do testů Shellu. |
