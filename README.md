@@ -18,8 +18,9 @@ Začni souborem [`frameworks/README.md`](frameworks/README.md).
 ~~~text
 npm install            esbuild pro build
 node build.mjs         sestaví dist/arkada.html (jeden soubor, jde otevřít dvojklikem)
-node test/t1_logika.mjs   testy logiky v Node
-node test/t2_shell.cjs    testy Shellu v prohlížeči (Playwright; cesta přes PLAYWRIGHT_PATH)
+npm test               build a všechny čtyři sady testů
+                       t1 logika hry a jádra (Node), t3 nastavení a úložiště (Node),
+                       t2 Shell a t4 nastavení v prohlížeči (Playwright; cesta přes PLAYWRIGHT_PATH)
 ~~~
 
 Vývojářský režim: `dist/arkada.html?dev`. Jiný seed: `?seed=7`.

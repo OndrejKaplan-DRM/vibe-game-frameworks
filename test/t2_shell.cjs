@@ -14,9 +14,9 @@ const wait = (ms) => new Promise((r) => setTimeout(r, ms));
     const { ctx, page, errs } = await open(browser);
     ok((await page.evaluate(() => __game.mode())) === 'menu', 'po startu je režim menu');
     ok((await page.textContent('.sh-title')) === 'Dinosaurus', 'titul je z adaptéru');
-    ok(/v0\.1/.test(await page.textContent('.sh-version')), 'verze je vidět');
-    ok((await page.locator('.sh-menu .sh-btn').count()) === 1, 'menu má jen položky, které hra umí', 'Hrát');
-    ok((await page.locator('[data-id="settings"], [data-id="load"], [data-id="catalog"]').count()) === 0, 'žádné tlačítko pro neexistující funkci');
+    ok(/v\d+\.\d+/.test(await page.textContent('.sh-version')), 'verze je vidět');
+    ok((await page.locator('.sh-menu .sh-btn').count()) === 2, 'menu má jen položky, které hra umí', 'Hrát, Nastavení');
+    ok((await page.locator('[data-id="load"], [data-id="save"], [data-id="catalog"], [data-id="controls"]').count()) === 0, 'žádné tlačítko pro neexistující funkci');
     ok(await page.evaluate(() => document.activeElement?.dataset?.id === 'play'), 'první položka má fokus');
 
     const s0 = await page.evaluate(() => __game.stats().steps);
@@ -37,7 +37,7 @@ const wait = (ms) => new Promise((r) => setTimeout(r, ms));
     await wait(400);
     const p1 = await page.evaluate(() => ({ steps: __game.stats().steps, hash: __game.hash() }));
     ok(p0.steps === p1.steps && p0.hash === p1.hash, 'v pauze stojí kroky i stav');
-    ok((await page.locator('.sh-paused .sh-btn').count()) === 3, 'pauza má 3 položky');
+    ok((await page.locator('.sh-paused .sh-btn').count()) === 4, 'pauza má 4 položky');
 
     // ochrana proti dvojímu přepnutí
     await wait(350);
@@ -56,6 +56,7 @@ const wait = (ms) => new Promise((r) => setTimeout(r, ms));
     // šipky v pauze, návrat do menu
     await wait(350);
     await page.keyboard.press('Escape');
+    await page.keyboard.press('ArrowDown');
     await page.keyboard.press('ArrowDown');
     await page.keyboard.press('ArrowDown');
     ok(await page.evaluate(() => document.activeElement?.dataset?.id === 'quit'), 'šipky posouvají fokus v nabídce');

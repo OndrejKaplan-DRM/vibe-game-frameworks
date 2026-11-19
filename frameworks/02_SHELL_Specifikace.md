@@ -66,8 +66,23 @@ Nový žánr Shell nemění. Mění se jen to, co adaptér nabídne. Rozcestník
 
 - Typy: `range`, `select`, `toggle`, `action` (tlačítko), `key`.
 - Změna se projeví hned. Ukládá se automaticky s viditelným potvrzením, nebo tlačítkem „Uložit změny“ (`persist: 'auto' | 'button'`). Vždy je k dispozici „Obnovit výchozí“.
-- Formát uloženého nastavení má verzi; neznámé klíče se ignorují, chybějící doplní výchozí hodnotou.
-- **Test proti placebu:** pro každou deklaraci nastav jinou než výchozí hodnotu a ověř, že `probe()` vrací totéž. Položka bez `probe` test neprojde. Tím se zákaz slepých prvků z Level 0 stává měřitelným.
+- Formát uloženého nastavení má verzi; neznámé klíče se ignorují, chybějící a neplatné doplní výchozí hodnota.
+- **Test proti placebu:** pro každou deklaraci nastav jinou než výchozí hodnotu a ověř, že `probe()` vrací totéž. Tím se zákaz slepých prvků z Level 0 stává měřitelným.
+
+Upřesnění z prvního použití (Shell S1):
+
+| Vlastnost deklarace | K čemu |
+|---|---|
+| registrace bez `probe` vyhodí chybu | slepý prvek se ke Shellu vůbec nepřipojí; nečeká se až na test |
+| `tolerance` | porovnání s `probe` u hodnot, které engine zaokrouhluje (měřítko vykreslení na celé body) |
+| `persist: false` | položky, které nemá smysl ukládat (celou obrazovku prohlížeč bez gesta nezapne); po startu se neaplikují |
+| `watch(cb)` | hodnota se může změnit mimo nastavení (celá obrazovka klávesou Esc); bez toho se rozejde menu a skutečnost |
+| `apply` smí vrátit `Promise` | když selže, hodnota se vrátí k tomu, co hlásí `probe` |
+| `format(v)` | popisek hodnoty („60 %“) |
+
+- Nastavení se ukládají synchronně do `localStorage` (se zálohou v paměti), aby šla použít před prvním snímkem. Asynchronní IndexedDB patří až k uloženým pozicím (oddíl 5).
+- „Uloženo“ se ukazuje jen u položek, které se opravdu ukládají.
+- **Rychlost hry a vývojářské měřítko času** jsou dva činitele jedné hodnoty: `timeScale = hra × vývojář`. `probe` rychlosti hry proto vrací `timeScale / vývojář`.
 
 ### Zásobník obvyklých položek (ber, co hra umí)
 
@@ -110,6 +125,8 @@ Upozornění k obrazu:
 4. Režim bez zámku pro testy a prostředí, kde zámek není povolen.
 
 Gamepad a dotyk jsou samostatné schopnosti. Když je hra nedeklaruje, nejsou v menu.
+
+**Orientace:** hra v `meta.orientation` řekne, jestli chce šířku. Shell pak na dotykovém zařízení drženém na výšku ukáže výzvu k otočení a hru zapauzuje; po otočení hra čeká v pauze. Úzké okno na počítači výzvu neukazuje. Zamknout orientaci jde jen v celé obrazovce a jen v některých prohlížečích, proto je výzva základ a zámek jen pokus navíc.
 
 **Pauza bez klávesnice:** telefon nemá Esc. Shell proto při hře vždy ukazuje tlačítko pauzy (aspoň 48 px). Prvky Shellu ležící nad herní plochou nesmí spouštět herní akci; hra bere dotyk jen z plochy samotné.
 
@@ -192,7 +209,9 @@ zdroje → [hudba | efekty | prostředí | rozhraní] → hlavní → kompresor/
 - **Písmo:** Calibri a Arial Narrow jsou jen na Windows. Pro stejný vzhled všude přibal volné písmo s českou diakritikou (Carlito je metricky shodné s Calibri; úzké alternativy Barlow Condensed, Roboto Condensed) a systémová písma nech jako zálohu.
 - **Titul:** velký název z `meta.title`, styl podle tónu; projekt může dodat vlastní vykreslení (SVG, plátno).
 - **Aby menu nevypadalo jako webová stránka:** žádné výchozí prvky prohlížeče a posuvníky, žádné označování textu, ovládání klávesnicí i gamepadem (fokus, potvrzení, zpět), zvuk na fokus a potvrzení, vlastní kurzor.
-- **Esc** vždy o úroveň zpět, s ochranou 300 ms proti dvojímu přepnutí.
+- **Esc** vždy o úroveň zpět, s ochranou 300 ms proti dvojímu přepnutí. Po zavření podobrazovky se fokus vrací na položku, ze které se otevřela.
+- **Pohyb fokusu po řádcích:** nahoru a dolů mezi řádky (na řádku s volbami padne fokus na tu zvolenou), vlevo a vpravo uvnitř řádku; posuvník si šipky vlevo a vpravo zpracuje sám.
+- V řádku nastavení má popisek jen šířku, kterou potřebuje; při dvou stejných sloupcích se volby zalamují.
 - **Rozložení:** jednotka odvozená z menšího rozměru okna; zlomy pro telefon na výšku, tablet, plochu a velkou obrazovku sledovanou z dálky. Reaguj na `resize` i na změnu `devicePixelRatio` (okno přetažené na jiný monitor nebo televizi). Testuj 360×640, 1366×768, 1920×1080, 3840×2160.
 - **Tón `kid`:** cíle aspoň 48 px, ikony a hlas místo textu u předčtenářů, nastavení za rodičovskou pojistkou (podržet 3 s), žádná nevratná akce bez potvrzení, žádné vývojářské prvky.
 - **Texty** v jedné tabulce (čeština výchozí), žádné řetězce natvrdo v komponentách.

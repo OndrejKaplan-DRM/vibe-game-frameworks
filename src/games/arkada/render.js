@@ -22,9 +22,12 @@ export function createRenderer(canvas, { dev = false } = {}) {
   const ctx = canvas.getContext('2d');
   let scale = 1; // px na metr
   let prev = { x: 0, y: 0 };
+  let pixelScale = 1; // měřítko vykreslení z nastavení (1 = nativní)
+  const baseDpr = () => Math.min(globalThis.devicePixelRatio || 1, 2);
 
   function resize() {
-    const dpr = Math.min(globalThis.devicePixelRatio || 1, 2);
+    const dpr = baseDpr() * pixelScale;
+    canvas.style.imageRendering = pixelScale < 0.75 ? 'pixelated' : 'auto';
     const availW = canvas.parentElement.clientWidth;
     const availH = canvas.parentElement.clientHeight;
     const ratio = CFG.view.w / CFG.view.h;
@@ -160,6 +163,15 @@ export function createRenderer(canvas, { dev = false } = {}) {
     },
     get scale() {
       return scale;
+    },
+    setPixelScale(v) {
+      pixelScale = v;
+      resize();
+    },
+    /** Skutečný poměr bodů plátna k bodům na obrazovce, vztažený k nativnímu rozlišení. */
+    measuredPixelScale() {
+      const cssW = parseFloat(canvas.style.width) || 1;
+      return canvas.width / (cssW * baseDpr());
     },
   };
 }

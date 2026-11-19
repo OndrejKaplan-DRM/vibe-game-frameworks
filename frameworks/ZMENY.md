@@ -17,3 +17,17 @@ Postaveno podle `01_CORE`, `02_SHELL` a `40_CASE`. Kde specifikace nestačila ne
 | 9 | `01_CORE` oddíl 7 | Mezi voláními testu běží skutečná smyčka a mění stav (snímek po `sim()` zachytil jiný okamžik). | Doplněno pravidlo o pauze kolem `sim()` a o logice bez DOM. |
 
 Neopraveno, jen zaznamenáno: vývojářský přehled kreslený hrou se může krýt s prvky Shellu (tlačítko pauzy). Správné řešení je přehled jako součást Shellu (krok S4) s vyhrazenými oblastmi.
+
+## 2026-11-19 — opravy z druhého použití (Shell S1: nastavení)
+
+| # | Kde | Co drhlo | Oprava |
+|---|---|---|---|
+| 10 | `02_SHELL` oddíl 2 | Test `apply/probe` odhalí slepý prvek až při běhu testů. | Položka bez `probe` se nedá zaregistrovat; hra s ní se k Shellu nepřipojí. |
+| 11 | `02_SHELL` oddíl 2 | Celá obrazovka se dá vypnout klávesou Esc mimo nastavení; menu pak ukazovalo něco jiného než skutečnost. | Vlastnost `watch(cb)`. |
+| 12 | `02_SHELL` oddíl 2 | Celou obrazovku nejde po startu obnovit (prohlížeč chce gesto). Uložená hodnota by byla nepravdivá. | Vlastnost `persist: false`. |
+| 13 | `02_SHELL` oddíl 2 | `apply` může být asynchronní a může selhat. | `apply` smí vrátit `Promise`; při selhání se hodnota vrací k `probe`. |
+| 14 | `02_SHELL` oddíl 2 | Měřítko vykreslení engine zaokrouhluje na celé body; přesné porovnání s `probe` selhávalo. | Vlastnost `tolerance`. |
+| 15 | `02_SHELL` oddíl 2 | „Rychlost hry“ a vývojářské měřítko času jako „jedna hodnota“ nestačilo: `probe` rychlosti by při zapnutém vývojářském měřítku hlásil chybu. | Zapsán vzor `timeScale = hra × vývojář` a `probe = timeScale / vývojář`. |
+| 16 | `02_SHELL` oddíl 5 | Pořadí úložišť „IndexedDB → localStorage → paměť“ se pro nastavení nehodí: IndexedDB je asynchronní a nastavení musí platit před prvním snímkem. | Nastavení synchronně do `localStorage`, IndexedDB až pro uložené pozice. |
+| 17 | `02_SHELL` oddíl 3 | Výzva k otočení sama nestačí: hra pod ní běžela dál; na počítači s úzkým oknem by naopak překážela. | Výzva jen na dotykovém zařízení, hra se zapauzuje a po otočení čeká. |
+| 18 | `02_SHELL` oddíl 9 | Po zavření nastavení skočil fokus na první položku menu; volby v řádku se zalamovaly. | Návrat fokusu, pohyb po řádcích, šířka popisku. |

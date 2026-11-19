@@ -7,6 +7,7 @@ import { createState, stepWorld, stateHash } from './world.js';
 import { createPlayerController, createScriptController } from './input.js';
 import { createRenderer } from './render.js';
 import { createAudio } from './audio.js';
+import { createSettingsDefs } from './settings.js';
 
 async function boot() {
   const canvas = document.getElementById('view');
@@ -80,6 +81,9 @@ async function boot() {
   E.add(world);
   E.add(view);
 
+  // rychlost hry (nastavení) a vývojářské měřítko času se násobí do jedné hodnoty
+  const time = { game: 1, dev: 1 };
+
   E.on('pickup', (s) => audio.pickup(s.streak));
   E.on('mode', () => (view.dirty = true));
   E.on('reset', () => (view.dirty = true));
@@ -91,7 +95,8 @@ async function boot() {
 
   // --- adaptér: jediná vazba mezi hrou a Shellem ---
   const adapter = {
-    meta: { id: 'arkada', title: 'Dinosaurus', subtitle: 'zkušební hra Shellu', version: VERSION, tone: 'kid' },
+    meta: { id: 'arkada', title: 'Dinosaurus', subtitle: 'zkušební hra Shellu', version: VERSION, tone: 'kid', orientation: 'landscape' },
+    settings: createSettingsDefs({ E, audio, renderer, view, time }),
     state: {
       mode: () => E.mode,
       onMode: (fn) => E.on('mode', ({ mode }) => fn(mode)),
@@ -160,8 +165,12 @@ async function boot() {
     },
     hash: () => stateHash(world.state),
     setTimeScale(x) {
-      E.timeScale = x;
+      time.dev = x;
+      E.timeScale = time.game * time.dev;
     },
+    settings: shell.settings,
+    screen: () => shell.screen(),
+    mountShell, // pro testy Shellu s jiným adaptérem
     audioReady: () => audio.ready,
   };
 

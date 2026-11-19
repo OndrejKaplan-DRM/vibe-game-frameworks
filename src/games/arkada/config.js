@@ -1,7 +1,7 @@
 // Návrhové veličiny arkády. Jediné místo s čísly (case 40, invarianty A1 a A6).
 // Jednotky: metry, sekundy, kroky simulace.
 
-export const VERSION = 'v0.1 · M0 + Shell S0 + arkáda M1 · 2026-11-19';
+export const VERSION = 'v0.2 · Shell S1 (nastavení) + arkáda M1 · 2026-11-19';
 
 const jumpHeight = 1.2; // m, plný skok (tlačítko držené)
 const timeToApex = 0.35; // s

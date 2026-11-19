@@ -1,9 +1,12 @@
-// Zvuk arkády v M1: jen sběr předmětu. Sběrnice a nastavení hlasitosti přijdou se Shellem S2.
-// AudioContext vzniká až prvním gestem uživatele.
+// Zvuk arkády: sběr předmětu a hlavní hlasitost. Sběrnice (hudba, efekty…) přijdou se Shellem S2.
+// AudioContext vzniká až prvním gestem uživatele; hlasitost se pamatuje i předtím.
+
+const MASTER_MAX = 0.5; // zesílení při hlasitosti 100 %
 
 export function createAudio() {
   let ctx = null;
   let master = null;
+  let volume = 0.6; // 0–1
 
   return {
     unlock() {
@@ -15,7 +18,7 @@ export function createAudio() {
       if (!AC) return;
       ctx = new AC();
       master = ctx.createGain();
-      master.gain.value = 0.25;
+      master.gain.value = volume * MASTER_MAX;
       master.connect(ctx.destination);
     },
 
@@ -35,6 +38,15 @@ export function createAudio() {
       osc.connect(gain).connect(master);
       osc.start(t);
       osc.stop(t + 0.2);
+    },
+
+    setVolume(v) {
+      volume = Math.min(1, Math.max(0, v));
+      if (master) master.gain.value = volume * MASTER_MAX;
+    },
+    /** Hlasitost, jakou zvukový graf skutečně má (před odemčením ta, která se použije). */
+    getVolume() {
+      return master ? master.gain.value / MASTER_MAX : volume;
     },
 
     get ready() {

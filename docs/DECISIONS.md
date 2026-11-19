@@ -11,3 +11,8 @@
 | D-007 | 2026-11-19 | Rychlé uložení bude F7/F9, vývojářský režim přes `?dev` | F5/F9, Ctrl+Shift+D | F5 obnovuje stránku, Ctrl+Shift+D je zkratka prohlížeče | – |
 | D-008 | 2026-11-19 | Větve: `main` stabilní, `dev` rozpracovaná iterace; sloučení po vyzkoušení | vše do `main` | možnost návratu | – |
 | D-009 | 2026-11-19 | `dist/arkada.html` je v repu | sestavovat jen místně | hru jde otevřít rovnou z repa a později z GitHub Pages | odebrat z gitu, přidat do `.gitignore` |
+| D-010 | 2026-11-19 | Telefon na výšku: hra chce šířku, Shell ukáže výzvu k otočení a zapauzuje | užší výřez světa na výšku | rozhodnutí zadavatele; jednodušší a hra má jednu podobu | `meta.orientation` v adaptéru |
+| D-011 | 2026-11-19 | Nastavení se ukládají do `localStorage` se zálohou v paměti | IndexedDB | musí platit před prvním snímkem; IndexedDB je asynchronní | vyměnit backend ve `src/core/store.js` |
+| D-012 | 2026-11-19 | Položka nastavení bez `probe` se nedá zaregistrovat | jen test | slepý prvek nemá vzniknout ani omylem | – |
+| D-013 | 2026-11-19 | Celá obrazovka se neukládá (`persist: false`) | ukládat | prohlížeč ji po startu bez gesta nezapne | – |
+| D-014 | 2026-11-19 | Obtížnost v nastavení zatím není | přidat přepínač hned | hra zatím nemá co ztěžovat; přepínač by byl slepý | přijde s arkádou M2 |
