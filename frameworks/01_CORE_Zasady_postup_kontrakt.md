@@ -99,7 +99,7 @@ function loop(now) {
   if (E.mode === 'playing') acc += real * E.timeScale;      // škáluje se PŘÍSUN času
   const maxSteps = Math.ceil(8 * Math.max(1, E.timeScale));
   let n = 0;
-  while (acc >= STEP && n < maxSteps) { E.step(STEP); acc -= STEP; n++; }
+  while (acc + 1e-9 >= STEP && n < maxSteps) { E.step(STEP); acc -= STEP; n++; }   // rezerva na zaokrouhlení
   if (n === maxSteps) acc = 0;                               // dluh zahoď, nespirálu
   E.frame(real, acc / STEP);
   requestAnimationFrame(loop);
@@ -172,6 +172,8 @@ Hluboké menu dostaneš hned od M0, protože Shell je hotová knihovna. To je ro
 
 - Hra vystavuje `window.__game = { start(opts), sim(sekundy, vstupy), key(), get(cesta), stats(), snapshot(), restore() }`.
 - `sim()` volá kroky bez čekání na skutečný čas. Testy tak běží rychle i bez grafické karty.
+- `sim(sekundy, skript)` na dobu běhu vymění řízení za skriptové. Mezi voláními testu běží skutečná smyčka dál a stav se posouvá; kde na tom záleží, hru kolem `sim()` zapauzuj.
+- Logiku drž v modulu bez DOM. Většina testů pak běží přímo v Node a prohlížeč je potřeba jen na Shell a vstupy.
 - Povinné testy každého casu: start bez chyb v konzoli, pauza zastaví čítač kroků, ulož/nahraj dá stejný stav, stejný seed a vstupy dají stejný výsledek, každé nastavení projde `apply/probe`, rozpočet kroku.
 - Test se píše ve stejné iteraci jako funkce. Počty v testech ber z dat, ne natvrdo.
 - Náhodný test, který občas padne, spusť dvakrát a pak teprve hledej chybu; časové limity měř na klidném stroji.

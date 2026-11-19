@@ -15,6 +15,11 @@ Shell je všechno kolem hry: titulní obrazovka, menu, nastavení, ukládání, 
 export const adapter = {
   meta: { id: 'arena', title: 'Aréna', subtitle: '', version: VERSION, tone: 'hard' }, // hard | retro | kid
 
+  state: {                          // povinné: Shell musí znát režim a jeho změny
+    mode() { return E.mode; },
+    onMode(fn) { /* zavolej fn(režim) při každé změně */ },
+  },
+
   settings: SETTINGS_DEFS,          // oddíl 2
   actions:  ACTIONS,                // oddíl 3
 
@@ -105,6 +110,8 @@ Upozornění k obrazu:
 4. Režim bez zámku pro testy a prostředí, kde zámek není povolen.
 
 Gamepad a dotyk jsou samostatné schopnosti. Když je hra nedeklaruje, nejsou v menu.
+
+**Pauza bez klávesnice:** telefon nemá Esc. Shell proto při hře vždy ukazuje tlačítko pauzy (aspoň 48 px). Prvky Shellu ležící nad herní plochou nesmí spouštět herní akci; hra bere dotyk jen z plochy samotné.
 
 ---
 
@@ -208,7 +215,7 @@ Shell se staví jako vlastní malý projekt se zkušební hrou. Doporučuju jako
 
 | Krok | Obsah | Test |
 |---|---|---|
-| **S0** | adaptér, režimy, titul, start, pauza, Esc | přechody režimů, čítač kroků v pauze stojí |
+| **S0** | adaptér, režimy, titul, start, pauza, Esc, tlačítko pauzy pro dotyk, pauza při skryté kartě | přechody režimů, čítač kroků v pauze stojí |
 | **S1** | nastavení z deklarací, ukládání, `apply/probe` | každá položka projde, reset vrátí výchozí |
 | **S2** | akce a přemapování, protokol zámku kurzoru, zvukové sběrnice | kolize kláves, odmítnutý zámek neshodí hru |
 | **S3** | správce pozic, náhledy, export/import, vrstva úložiště | ulož → nahraj → stejný stav; plné úložiště; poškozený slot |

@@ -1,0 +1,23 @@
+/* Stránka hry: plátno uprostřed okna, Shell přes celé okno. */
+
+html,
+body {
+  height: 100%;
+  margin: 0;
+  background: #0a0e14;
+  overflow: hidden;
+  overscroll-behavior: none;
+}
+
+#app {
+  position: fixed;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  touch-action: none;
+}
+
+#view {
+  display: block;
+  background: #bfe3ff;
+}

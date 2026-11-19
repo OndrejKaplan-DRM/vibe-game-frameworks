@@ -1,0 +1,160 @@
+/* Shell S0. Jednotka --u vychází z menšího rozměru okna, tóny jsou sady proměnných. */
+
+.shell {
+  --u: min(1vw, 1.78vh);
+  --bg: rgba(10, 14, 20, 0.8);
+  --fg: #e8eef5;
+  --muted: #8fa3b8;
+  --accent: #f2a33a;
+  --btn-bg: rgba(255, 255, 255, 0.06);
+  --btn-border: rgba(255, 255, 255, 0.22);
+  --radius: 2px;
+  --title-shadow: 0 0 calc(var(--u) * 1.2) rgba(242, 163, 58, 0.55);
+
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  color: var(--fg);
+  font-family: Calibri, Carlito, 'Arial Narrow', Bahnschrift, 'Roboto Condensed', system-ui, sans-serif;
+  user-select: none;
+  -webkit-user-select: none;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.shell.tone-retro {
+  --accent: #35e0d0;
+  --title-shadow: calc(var(--u) * 0.25) calc(var(--u) * 0.25) 0 #b0306a;
+  --radius: 0;
+}
+
+.shell.tone-kid {
+  --bg: rgba(24, 60, 96, 0.72);
+  --accent: #ffd23f;
+  --btn-bg: rgba(255, 255, 255, 0.16);
+  --btn-border: rgba(255, 255, 255, 0.55);
+  --radius: 16px;
+  --title-shadow: 0 calc(var(--u) * 0.35) 0 #e8662c, 0 calc(var(--u) * 0.7) calc(var(--u) * 0.8) rgba(0, 0, 0, 0.35);
+}
+
+.sh-screen {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: clamp(10px, calc(var(--u) * 1.6), 28px);
+  padding: 4vh 6vw;
+  background: var(--bg);
+  pointer-events: auto;
+  text-align: center;
+}
+
+.sh-screen[hidden],
+.sh-pause[hidden] {
+  display: none !important;
+}
+
+/* v pauze se obraz hry nepřekresluje, rozmazání je tedy levné */
+.sh-paused {
+  backdrop-filter: blur(4px);
+}
+
+.sh-title {
+  margin: 0;
+  font-size: clamp(40px, calc(var(--u) * 9), 190px);
+  line-height: 1;
+  font-weight: 800;
+  letter-spacing: 0.02em;
+  color: var(--accent);
+  text-shadow: var(--title-shadow);
+  animation: sh-float 3.2s ease-in-out infinite;
+}
+
+.sh-subtitle {
+  margin: 0;
+  font-size: clamp(14px, calc(var(--u) * 1.8), 34px);
+  color: var(--muted);
+}
+
+.sh-heading {
+  margin: 0;
+  font-size: clamp(28px, calc(var(--u) * 5), 110px);
+  font-weight: 700;
+  color: var(--accent);
+}
+
+.sh-nav {
+  display: flex;
+  flex-direction: column;
+  gap: clamp(8px, calc(var(--u) * 0.9), 18px);
+  margin-top: clamp(6px, calc(var(--u) * 1.2), 24px);
+  width: min(86vw, clamp(220px, calc(var(--u) * 30), 620px));
+}
+
+.sh-btn {
+  appearance: none;
+  min-height: 48px;
+  padding: clamp(10px, calc(var(--u) * 1), 22px) clamp(16px, calc(var(--u) * 2), 40px);
+  font: inherit;
+  font-size: clamp(18px, calc(var(--u) * 2.4), 46px);
+  font-weight: 600;
+  color: var(--fg);
+  background: var(--btn-bg);
+  border: 2px solid var(--btn-border);
+  border-radius: var(--radius);
+  cursor: pointer;
+  outline: none;
+  transition: background 0.12s, border-color 0.12s, transform 0.12s;
+}
+
+.sh-btn:hover,
+.sh-btn:focus-visible,
+.sh-btn:focus {
+  background: color-mix(in srgb, var(--accent) 22%, transparent);
+  border-color: var(--accent);
+  transform: scale(1.03);
+}
+
+.sh-version {
+  position: absolute;
+  bottom: clamp(8px, 2vh, 24px);
+  left: 0;
+  right: 0;
+  font-size: clamp(11px, calc(var(--u) * 1.1), 20px);
+  color: var(--muted);
+}
+
+.sh-pause {
+  position: absolute;
+  top: clamp(8px, 2vh, 20px);
+  right: clamp(8px, 2vw, 20px);
+  width: clamp(48px, calc(var(--u) * 4.5), 84px);
+  height: clamp(48px, calc(var(--u) * 4.5), 84px);
+  font-size: clamp(16px, calc(var(--u) * 1.6), 30px);
+  color: #fff;
+  background: rgba(10, 14, 20, 0.45);
+  border: 2px solid rgba(255, 255, 255, 0.5);
+  border-radius: var(--radius);
+  cursor: pointer;
+  pointer-events: auto;
+}
+
+@keyframes sh-float {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(calc(var(--u) * -0.6));
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .sh-title {
+    animation: none;
+  }
+  .sh-btn {
+    transition: none;
+  }
+}

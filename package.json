@@ -1,0 +1,16 @@
+{
+  "name": "vibe-game-frameworks",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "description": "Herní Shell a frameworky pro vibe-coding her",
+  "scripts": {
+    "build": "node build.mjs",
+    "test:logic": "node test/t1_logika.mjs",
+    "test:shell": "node test/t2_shell.cjs",
+    "test": "node build.mjs && node test/t1_logika.mjs && node test/t2_shell.cjs"
+  },
+  "devDependencies": {
+    "esbuild": "0.28.2"
+  }
+}

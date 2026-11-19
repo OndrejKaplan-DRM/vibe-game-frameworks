@@ -30,7 +30,22 @@ const v0 = 2 * h / t;            //                              → v0 = 6,86 m
 Tři drobnosti, které dělají rozdíl mezi „hranatým“ a příjemným skokem:
 - **proměnná výška:** při puštění tlačítka během stoupání se rychlost nahoru zkrátí (např. na polovinu),
 - **kojotí čas:** skok jde ještě ~6 kroků po opuštění hrany,
-- **paměť stisku:** stisk ~6 kroků před dopadem se provede po dopadu.
+- **paměť stisku:** stisk platí ~6 kroků (včetně kroku stisku) a provede se po dopadu.
+
+Tři upřesnění z prvního použití (arkáda M1):
+
+1. **Minimální výška skoku je také návrhová veličina.** Pouhé ťuknutí (dotyk, malé dítě) musí s rezervou přeskočit nejnižší překážku. Zkrátit skok proto jde až po nastoupání výšky
+
+~~~js
+// f = koeficient zkrácení (např. 0,5), hMin = nejnižší skok, h = plný skok
+const cutAfterHeight = (hMin - h * f * f) / (1 - f * f);   // h = 1,2, hMin = 1,0, f = 0,5 → 0,93 m
+~~~
+
+   Bez toho dá ťuknutí skok kolem 0,4 m a bednu 0,6 m nepřekoná nikdy.
+
+2. **Krok počítej přesně.** Pro stálé zrychlení `y += v·dt − ½·g·dt²; v −= g·dt`. Obvyklé „nejdřív rychlost, potom poloha“ dá při 60 Hz skok o ~5 % nižší, než je navrženo, a test výšky neprojde.
+
+3. **Pořadí v kroku rozhoduje, co „6 kroků“ znamená:** stisk → pohyb → dopad → doplnění kojotího času → skok → odpočty. V tomto pořadí platí stisk 5 kroků před dopadem i skok 6 kroků za hranou.
 
 **A2 — Pevný krok 60 Hz**, pauza při skryté kartě. Bez ní hráč „zemře“, zatímco se dívá jinam.
 
@@ -49,7 +64,7 @@ dospělý: ≥ 0,6 s      malé dítě: ≥ 1,2 s
 
 **A7 — Pooly a přesun počátku.** Překážky a částice se recyklují. U nekonečného běhu se po každých N metrech odečte posun od všech poloh, aby souřadnice nerostly. (Stejný princip jako plovoucí počátek ve vesmíru, jen v malém.)
 
-**A8 — Jedno sloveso, tři vstupy.** Klávesa, dotyk kdekoli na obrazovce, tlačítko gamepadu vedou na tutéž akci. První vstup zároveň odemyká zvuk.
+**A8 — Jedno sloveso, tři vstupy.** Klávesa, dotyk kdekoli na obrazovce, tlačítko gamepadu vedou na tutéž akci. První vstup zároveň odemyká zvuk. „Kdekoli“ znamená celou herní plochu včetně okrajů kolem plátna; tlačítko pauzy ze Shellu skok spustit nesmí. Stisk kratší než jeden krok se nesmí ztratit (zapamatuj ho do příštího kroku).
 
 **A9 — Šťáva je součást zadání.** Zvuk sběru se stoupající výškou při sérii, krátké zmáčknutí a natažení postavy při odrazu a dopadu, částice, počitadlo, které poskočí. Na tomhle arkáda stojí víc než na počtu funkcí.
 
@@ -63,7 +78,7 @@ dospělý: ≥ 0,6 s      malé dítě: ≥ 1,2 s
 
 **A11 — Skóre a rekord** se ukládají místně; žádné účty.
 
-**A12 — Logické rozlišení a okraje.** Hra počítá v pevných jednotkách a škáluje se do okna; otočení telefonu ji nesmí rozbít.
+**A12 — Logické rozlišení a okraje.** Hra počítá v pevných jednotkách a škáluje se do okna; otočení telefonu ji nesmí rozbít. Pevný poměr 16:9 je na telefonu drženém na výšku jen úzký pruh: rozhodni předem, jestli hra požádá o otočení, nebo na výšku ukáže užší výřez světa.
 
 **A13 — Assety s licencí** (volné sady CC0) zapsané v `DATA_SOURCES.md`.
 
@@ -130,7 +145,7 @@ Lehký profil: adaptér deklaruje jen to, co hra má.
 
 | # | Test | Podmínka |
 |---|---|---|
-| T1 | skok z klidu | výška = h ±2 %, čas do vrcholu = t ±1 krok |
+| T1 | skok z klidu; ťuknutí na jeden krok | výška = h ±2 %, čas do vrcholu = t ±1 krok; ťuknutí dá skok ≥ hMin a bednu jde přeskočit v okně ≥ 12 kroků |
 | T2 | stisk 5 kroků před dopadem; skok 5 kroků za hranou | oba se provedou |
 | T3 | všechny vzory při nejnižší a nejvyšší rychlosti | robot je projde |
 | T4 | stejný seed dvakrát | stejné pořadí překážek, i po přidání efektů |
