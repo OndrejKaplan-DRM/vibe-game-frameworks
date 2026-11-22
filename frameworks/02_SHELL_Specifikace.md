@@ -1,5 +1,7 @@
 # Shell — specifikace (Level 1)
 
+> **Od 22. 11. 2026 má kód Shellu domov v repu `OndrejKaplan-DRM/xEngine`, složka `src/shell`** (převzat z tohoto repa, větev `dev`, commit `ab8557a`). Změny Shellu se dělají tam. Tato specifikace zatím zůstává tady.
+
 Shell je všechno kolem hry: titulní obrazovka, menu, nastavení, ukládání, katalog, vývojářské nástroje, načítání. Tohle je náhrada „univerzálního promptu na menu“ z Level 0.
 
 **Tři rozhodnutí, která ho odlišují od Level 0:**
